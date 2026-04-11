@@ -1,6 +1,12 @@
 # Crontab 配置指南
 
-本文档描述 context infrastructure 系统所需的定时任务。
+本文档描述 context infrastructure 系统的 cron 兼容路径。
+
+如果你已经完成 Codex 化改造，默认主路径应当是 Codex 原生 automation。这里只有在以下情况才需要使用：
+
+- 你明确不使用 Codex automation
+- 需要在非 Codex 环境中复用旧调度方式
+- automation 异常时临时接管调度
 
 ---
 
@@ -27,23 +33,25 @@ Daily     → Crontab Monitor: 健康审计，发现异常则发告警邮件
 扫描 workspace 文件变动，提取有价值的观察写入 `contexts/memory/OBSERVATIONS.md`。这是三层记忆系统的"输入端"。
 
 - **脚本**：`periodic_jobs/ai_heartbeat/src/v0/observer.py`
-- **依赖**：OpenCode Server API（`OPENCODE_API_URL`）
+- **依赖**：Codex CLI 或 OpenCode Server API
 - **建议时间**：每日 8:00 AM（在 daily briefing 之后）
+- **说明**：对 Codex 用户，这个脚本更适合作为验证、补跑和兼容入口，而不是主调度器
 
 ### AI Heartbeat Reflector（每周）
 
 合并、提升、清理 OBSERVATIONS.md 中积累的观察，蒸馏为更高层次的认知。
 
 - **脚本**：`periodic_jobs/ai_heartbeat/src/v0/reflector.py`
-- **依赖**：OpenCode Server API（`OPENCODE_API_URL`）
+- **依赖**：Codex CLI 或 OpenCode Server API
 - **建议时间**：每周日 9:00 AM
+- **说明**：对 Codex 用户，这个脚本更适合作为验证、补跑和兼容入口，而不是主调度器
 
 ### Crontab Monitor（每日）
 
 自主审计所有 crontab 任务的健康状态，发现异常时发送告警邮件。
 
 - **脚本**：`periodic_jobs/ai_heartbeat/src/v0/jobs/crontab_monitor.py`
-- **依赖**：OpenCode Server API、Gmail（`GMAIL_USERNAME` / `GMAIL_APP_PASSWORD`）
+- **依赖**：Codex CLI 或 OpenCode Server API、Gmail（`GMAIL_USERNAME` / `GMAIL_APP_PASSWORD`）
 - **建议时间**：每日 9:00 AM
 
 ### AI News Survey（每日/每周）
@@ -51,7 +59,7 @@ Daily     → Crontab Monitor: 健康审计，发现异常则发告警邮件
 调用 AI Agent 生成 AI 行业日报或周报，可发布到 Kit 订阅者或发送个人邮件。
 
 - **脚本**：`periodic_jobs/ai_heartbeat/src/v0/jobs/ai_news_survey.py`
-- **依赖**：OpenCode Server API、Gmail 或 Kit API
+- **依赖**：Codex CLI 或 OpenCode Server API、Gmail 或 Kit API
 - **建议时间**：每日 8:00 AM（日报）或每周一 8:00 AM（周报）
 
 ---
@@ -66,19 +74,19 @@ Daily     → Crontab Monitor: 健康审计，发现异常则发告警邮件
 # TZ=America/Los_Angeles
 
 # AI Heartbeat Observer — 每日 8:00 AM
-0 8 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/observer.py >> /tmp/observer.log 2>&1
+0 8 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/observer.py --backend codex >> /tmp/observer.log 2>&1
 
 # AI Heartbeat Reflector — 每周日 9:00 AM
-0 9 * * 0 cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/reflector.py >> /tmp/reflector.log 2>&1
+0 9 * * 0 cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/reflector.py --backend codex >> /tmp/reflector.log 2>&1
 
 # Crontab Monitor — 每日 9:00 AM
-0 9 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/crontab_monitor.py >> /tmp/crontab_monitor.log 2>&1
+0 9 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/crontab_monitor.py --backend codex >> /tmp/crontab_monitor.log 2>&1
 
 # AI News Survey 日报 — 每日 8:00 AM（发个人邮件）
-0 8 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/ai_news_survey.py --mode daily >> /tmp/ai_news_survey.log 2>&1
+0 8 * * * cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/ai_news_survey.py --backend codex --mode daily >> /tmp/ai_news_survey.log 2>&1
 
 # AI News Survey 周报 — 每周一 8:00 AM（发布到 Kit 订阅者）
-0 8 * * 1 cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/ai_news_survey.py --mode weekly --publish-to-kit >> /tmp/ai_news_weekly.log 2>&1
+0 8 * * 1 cd /path/to/your/workspace && /path/to/your/workspace/.venv/bin/python periodic_jobs/ai_heartbeat/src/v0/jobs/ai_news_survey.py --backend codex --mode weekly --publish-to-kit >> /tmp/ai_news_weekly.log 2>&1
 ```
 
 ---

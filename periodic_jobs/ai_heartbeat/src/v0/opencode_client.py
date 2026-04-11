@@ -7,12 +7,15 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 module_dir = Path(__file__).resolve().parent
-project_env_path = module_dir.parent.parent / ".env"
-legacy_env_path = module_dir.parent / ".env"
-if project_env_path.exists():
-    load_dotenv(project_env_path)
-else:
-    load_dotenv(legacy_env_path)
+workspace_root = Path(__file__).resolve().parents[4]
+env_candidates = [
+    workspace_root / ".env",
+    workspace_root / "periodic_jobs" / "ai_heartbeat" / ".env",
+    workspace_root / "periodic_jobs" / "ai_heartbeat" / "src" / ".env",
+]
+for env_path in env_candidates:
+    if env_path.exists():
+        load_dotenv(env_path)
 
 # Message timeout: agentic tasks can run 10–60+ min. Default 1 hour.
 MESSAGE_TIMEOUT = int(os.getenv("OPENCODE_MESSAGE_TIMEOUT", "3600"))

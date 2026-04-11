@@ -1,29 +1,25 @@
 #!/usr/bin/env python3
 import os
-import time
 from datetime import datetime
 import sys
 from pathlib import Path
 
-# Add the parent directory to sys.path to import OpenCodeClient
 sys.path.append(str(Path(__file__).parent.parent))
 try:
-    from opencode_client import OpenCodeClient
+    from agent_runner import get_workspace_root, normalize_backend, run_agent_task
 except ImportError:
-    print("Error: Could not import OpenCodeClient. Ensure path is correct.")
+    print("Error: Could not import agent runner. Ensure path is correct.")
     sys.exit(1)
 
-def run_ai_analysis():
+WORKSPACE_ROOT = get_workspace_root()
+
+
+def run_ai_analysis(backend="codex", model_id=None):
     """
-    Delegates the entire crontab health check process to the OpenCode Agent.
+    Delegates the entire crontab health check process to a local AI agent.
     """
-    client = OpenCodeClient()
+    backend = normalize_backend(backend)
     session_title = f"Autonomous Crontab Health Check {datetime.now().strftime('%Y-%m-%d %H:%M')}"
-    session_id = client.create_session(session_title)
-    
-    if not session_id:
-        print("Failed to create OpenCode session.")
-        return
 
     # Proactive and autonomous prompt
     prompt = f"""
@@ -35,7 +31,7 @@ def run_ai_analysis():
 2. **深度调查日志**：
    - 对于每个任务，分析其执行频率。
    - 识别日志文件路径。
-   - **向下钻取 (Drill-down)**：如果 Crontab 中没有明确的日志重定向（例如没有 `>>`），请**不要直接假设它没有日志**。你应该定位脚本文件（例如 `/path/to/your/workspace/scripts/cron_launcher.sh`）并 `read` 脚本内容，检查其内部是否有日志重定向逻辑（例如 `exec >>`）。
+   - **向下钻取 (Drill-down)**：如果 Crontab 中没有明确的日志重定向（例如没有 `>>`），请**不要直接假设它没有日志**。你应该定位脚本文件（例如 `{WORKSPACE_ROOT.as_posix()}/scripts/cron_launcher.sh`）并读取脚本内容，检查其内部是否有日志重定向逻辑（例如 `exec >>`）。
 3. **活跃度分析**：
    - 使用工具检查日志文件的最后修改时间。
    - 如果频率很高（如每 2 分钟运行一次），日志应在最近 2 分钟内更新。
@@ -46,8 +42,8 @@ def run_ai_analysis():
 
 5. **录音质量检查**：
    - 运行 life_record 的录音检查脚本，检查**最近两天**的录音是否有问题。
-    - 脚本路径：`/path/to/your/workspace/contexts/life_record/scripts/check_recent_recordings.py`
-   - 执行方式：先 `cd /path/to/your/workspace/contexts/life_record`，对最近两天的 YYYYMMDD 各运行一次。可通过 `ls data/` 获取最近两个日期目录，或使用 `date -v-1d +%Y%m%d` 获取昨天日期。示例：`python scripts/check_recent_recordings.py`（最近一天）及 `python scripts/check_recent_recordings.py 20260224`（指定日期）。
+    - 脚本路径：`{WORKSPACE_ROOT.as_posix()}/contexts/life_record/scripts/check_recent_recordings.py`
+   - 执行方式：先 `cd {WORKSPACE_ROOT.as_posix()}/contexts/life_record`，对最近两天的 YYYYMMDD 各运行一次。可通过 `ls data/` 获取最近两个日期目录，或使用系统命令计算日期。示例：`python scripts/check_recent_recordings.py`（最近一天）及 `python scripts/check_recent_recordings.py 20260224`（指定日期）。
    - 关注的问题：覆盖率不足（如 24 小时只录了 2 小时）、音量完全静音（无有效声音）、目录为空等。
    - 若脚本 exit 1 或输出问题描述，视为异常。
 
@@ -59,16 +55,30 @@ def run_ai_analysis():
 
 请开始你的审计工作。
 """
-    print(f"Triggering autonomous analysis in OpenCode (Session: {session_id})...")
-    result = client.send_message(session_id, prompt, model_id="glm-5")
-    
-    if result:
-        client.wait_for_session_complete(session_id)
-        print("Autonomous AI Analysis complete.")
-    else:
-        print("Failed to start analysis session.")
+    print(f"Triggering autonomous analysis with backend={backend}...")
+    result = run_agent_task(
+        prompt,
+        backend=backend,
+        model_id=model_id,
+        session_title=session_title,
+        workdir=WORKSPACE_ROOT,
+        sandbox="danger-full-access",
+    )
+    if result.resolved_model:
+        print(f"Resolved model: {result.resolved_model}")
+    if result.final_message:
+        print(result.final_message)
+    print("Autonomous AI Analysis complete.")
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run crontab health audit")
+    parser.add_argument("--backend", "-b", choices=["codex", "opencode"], default=os.getenv("AI_HEARTBEAT_BACKEND", "codex"),
+                        help="Agent backend (default: codex)")
+    parser.add_argument("--model", "-M", default=None, help="Model ID to use")
+    args = parser.parse_args()
+
     print("Starting Autonomous Crontab Auditor...")
-    run_ai_analysis()
+    run_ai_analysis(backend=args.backend, model_id=args.model)
     print("Audit process finished.")

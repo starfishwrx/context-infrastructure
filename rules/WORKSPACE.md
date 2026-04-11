@@ -31,3 +31,7 @@
 
 <!-- 随着你的项目增长，在这里添加活跃项目的快捷路由 -->
 <!-- 格式：- `project-name` → `adhoc_jobs/project_name/` (说明) -->
+- `ai-job-radar2` → `adhoc_jobs/ai_job_radar2/` (job radar project imported from Desktop)
+- `ai-heartbeat` → `periodic_jobs/ai_heartbeat/` (observer/reflector prompts, docs, runtime)
+- `chronos-2` → `adhoc_jobs/chronos_2/` (time-series forecasting project imported from E:\demo)
+- `plcagent` → `adhoc_jobs/plcagent/` (standalone Codex project)

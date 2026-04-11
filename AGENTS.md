@@ -16,6 +16,26 @@ Before doing anything else:
 
 Don't ask permission. Just do it.
 
+## Automation Exception
+
+对于 recurring automation，尤其是 `ai-heartbeat-observer` 和 `ai-heartbeat-reflector`：
+
+- 不要走完整的 session bootstrap
+- 不要默认重读 `rules/SOUL.md`、`rules/USER.md`、`rules/WORKSPACE.md`、`rules/COMMUNICATION.md`、`rules/skills/INDEX.md`
+- 以 automation prompt 文件和 automation memory 为主
+- 只有在任务真的卡住、且缺少策略信息时，才补读相关 rule 文件
+- 优先用少量 batched read，而不是一上来发很多独立读取命令
+
+原因：heartbeat automation 的目标是稳定、低干扰、后台运行；不是每次都重新建立整套人工协作上下文。
+
+## Codex Notes
+
+- Codex 会读取仓库内的 `AGENTS.md`，所以这个文件本身就是 Codex 的根路由入口。
+- 交互式使用时，直接从本仓库根目录启动 Codex 即可：`codex -C <workspace>`
+- 非交互任务优先使用 `codex exec`，让 agent 自己读写文件，而不是把大段上下文塞进命令行参数。
+- 对这套 workspace 而言，长期运行入口默认是 Codex 原生 recurring automation。
+- `observer.py` / `reflector.py` 这类手动脚本保留，但定位是启动验证、故障排查和漏跑补跑，不是主调度路径。
+
 ## File Routing
 
 **找文件时，先查 `rules/WORKSPACE.md`，再搜索。** WORKSPACE.md 是这个 workspace 的目录索引，记录了每类内容的存放位置。绝大多数情况下查一下就能定位到目标目录，不需要全盘 glob/grep。如果发现新目录或项目没被收录，顺手更新 WORKSPACE.md。
@@ -46,7 +66,7 @@ Don't ask permission. Just do it.
 
 ## Sub-agent 模型路由
 
-配置文件：`~/.config/opencode/oh-my-opencode.json`
+如果你主要用 Codex，这一节可以视为历史兼容说明；Codex 本身不依赖 OpenCode 的模型路由配置文件。
 
 常用路由速查：
 - **Gemini 3 Pro**（创意、brainstorm、非常规思路）→ `category="artistry"`
@@ -67,7 +87,7 @@ Don't ask permission. Just do it.
 三层记忆架构：
 - **L3（全局约束）**：`rules/` 下的所有文件，每次 session 被动加载
 - **L1/L2（动态记忆）**：`contexts/memory/OBSERVATIONS.md`，agent 主动检索
-- **自动积累**：`periodic_jobs/ai_heartbeat/` 每日 observer + 每周 reflector
+- **自动积累**：`periodic_jobs/ai_heartbeat/` 的 prompt 和脚本提供 heartbeat 能力，默认由 Codex automation 驱动；手动脚本只用于验证和补跑
 
 ## Safety
 

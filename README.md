@@ -13,12 +13,12 @@
 ```bash
 git clone https://github.com/grapeot/context-infrastructure
 cd context-infrastructure
-# 用 Claude Code / OpenCode / Cursor 打开这个目录
+# 用 Codex / Claude Code / OpenCode / Cursor 打开这个目录
 ```
 
 然后：打开 [`rules/USER.md`](rules/USER.md)，填写你的基本信息。这是 ROI 最高的一步，完成后 AI 的行为立刻个性化。
 
-详细步骤见 [`setup_guide.md`](setup_guide.md)。
+详细步骤见 [`setup_guide.md`](setup_guide.md)。如果你用 Codex，后续长期运行默认走 Codex 原生 automation。
 
 ---
 
@@ -31,7 +31,7 @@ context-infrastructure/
 ├── .env.example                 # 环境变量模板
 │
 ├── docs/
-│   └── CRONTAB.md               # 定时任务配置指南（时间线 + 示例 crontab）
+│   └── CRONTAB.md               # 兼容路径：不用 Codex automation 时的 cron 指南
 │
 ├── rules/
 │   ├── SOUL.md                  # AI 的身份和行为基调（模板）
@@ -54,8 +54,8 @@ context-infrastructure/
 │       │   ├── PRD.md           # 记忆系统设计文档
 │       │   └── KNOWLEDGE_BASE.md # 观察和反思的 SOP
 │       └── src/v0/
-│           ├── observer.py      # 每日观察脚本（需配置 cron）
-│           └── reflector.py     # 每周反思脚本（需配置 cron）
+│           ├── observer.py      # 手动验证 / 故障排查 / 补跑入口
+│           └── reflector.py     # 手动验证 / 故障排查 / 补跑入口
 │
 ├── tools/
 │   ├── semantic_search/         # 语义搜索（Tier 2）
@@ -70,7 +70,7 @@ context-infrastructure/
 
 **展示层（可以参考，不能复制）**：[`rules/axioms/`](rules/axioms/) 和 [`rules/skills/`](rules/skills/) 包含了这个系统积累一年的内容。43 条公理是从具体经历中蒸馏出来的，skills 是从真实项目中总结的。这些代表原作者的视角，对你有参考价值，但不能替代你自己积累的认知。
 
-**可复用层（直接用）**：[`rules/SOUL.md`](rules/SOUL.md)、[`rules/USER.md`](rules/USER.md) 是模板，填写即可使用。[`rules/COMMUNICATION.md`](rules/COMMUNICATION.md) 是通用的沟通风格指南，大多数人可以直接采用。[`periodic_jobs/ai_heartbeat/`](periodic_jobs/ai_heartbeat/) 提供了记忆系统的实现代码。需要配置定时任务时，参考 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
+**可复用层（直接用）**：[`rules/SOUL.md`](rules/SOUL.md)、[`rules/USER.md`](rules/USER.md) 是模板，填写即可使用。[`rules/COMMUNICATION.md`](rules/COMMUNICATION.md) 是通用的沟通风格指南，大多数人可以直接采用。[`periodic_jobs/ai_heartbeat/`](periodic_jobs/ai_heartbeat/) 提供了记忆系统的实现代码。对 Codex 用户，默认运行路径是 recurring automation；只有明确不用 Codex automation 时，才参考 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
 
 **不可复用层**：公理的具体内容、skill 背后的具体经验。理解它们的结构和形成方式，然后从你自己的数据中积累。
 

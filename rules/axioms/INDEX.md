@@ -38,10 +38,15 @@
 - 「验证」「信任」「可靠性」→ V 系列, A04
 - 「优先级」「效率」「瓶颈」→ M03, X03
 - 「上下文」「记忆」「文档」→ A05, T03
+- 「builder」「architect」「资产化」「创业」→ A14, A09, A13, T05
+- 「辩论」「steelman」「反驳」「观点」→ M11, T04, V02
+- 「想清楚再做」「开始做」「craft」「science」「what why how」→ M12, T08, M01
+- 「海盗」「ownership」「agency」「predation」「打破规则」→ V06, V01, A14
+- 「无非是」「过早简化」「立场先行」「多维」→ M13, T04, X06
 
 ---
 
-## A. AI/Agentic 领域 (13条)
+## A. AI/Agentic 领域 (14条)
 
 | ID | 公理 | 核心含义 |
 |----|------|----------|
@@ -58,6 +63,7 @@
 | A11 | [工具组合即能力扩展](a11_tool_composition_as_capability_expansion.md) | 工具被组合时能力非线性扩展 |
 | A12 | [AI 原生开发范式](a12_ai_native_development_paradigm.md) | 软件应优先提供 AI 可消费的接口 |
 | A13 | [技术采用三阶段](a13_tech_adoption_stages.md) | 电动机平行：Driver→Co-pilot→Architect |
+| A14 | [从用户到建造者](a14_from_users_to_builders.md) | User 抓不住红利；Builder 沉淀资产；Architect 是长期方向 |
 
 ---
 
@@ -77,7 +83,7 @@
 
 ---
 
-## M. 管理/工作哲学 (10条)
+## M. 管理/工作哲学 (13条)
 
 | ID | 公理 | 核心含义 |
 |----|------|----------|
@@ -91,10 +97,13 @@
 | M08 | [自我系统化](m08_self_systematization.md) | 人+工具+日志+AI=混合有机体 |
 | M09 | [AI 时代管理范式](m09_ai_era_management_paradigm.md) | 过程确定性→结果确定性，科学脑评估 |
 | M10 | [教育流失阶梯模型](m10_education_retention_ladder.md) | 四道摩擦关卡与工程化消除 |
+| M11 | [强观点，弱执念](m11_strong_opinions_weakly_held.md) | 先形成判断，再主动 steelman 反方以推进问题 |
+| M12 | [方向层用 Science，执行层用 Craft](m12_direction_science_execution_craft.md) | 方向靠世界模型，执行靠实践体感 |
+| M13 | [反过早简化](m13_anti_premature_simplification.md) | 拆解保留信息，判决压扁维度 |
 
 ---
 
-## V. 信任与验证 (5条)
+## V. 信任与验证 (6条)
 
 | ID | 公理 | 核心含义 |
 |----|------|----------|
@@ -103,6 +112,7 @@
 | V03 | [归因塑造感知](v03_attribution_shapes_perception.md) | 让隐形工作可见 |
 | V04 | [时间锚定防止幻觉](v04_temporal_grounding_prevents_hallucination.md) | 验证时效性信息 |
 | V05 | [信任归因双维度](v05_trust_attribution_dual_dimension.md) | 信任主体×信任域的产品设计 |
+| V06 | [保留 Agency，去掉 Predation](v06_agency_without_predation.md) | 对外做挑战者，对内建契约，边界清晰 |
 
 ---
 
@@ -123,9 +133,9 @@
 
 | 领域 | 数量 |
 |------|------|
-| AI/Agentic | 13 |
+| AI/Agentic | 14 |
 | 技术决策 | 9 |
-| 管理/工作哲学 | 10 |
-| 信任与验证 | 5 |
+| 管理/工作哲学 | 13 |
+| 信任与验证 | 6 |
 | 跨域隐喻 | 6 |
-| **总计** | **43** |
+| **总计** | **48** |

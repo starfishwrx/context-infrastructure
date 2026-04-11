@@ -92,6 +92,8 @@ subprocess.run([
 - `-c model_reasoning_effort`: `low` (翻译) / `medium` (常规) / `high` (深度重构)
 - `--full-auto`: 自动接受所有操作
 - `--json`: JSON 输出格式
+- `-o, --output-last-message <FILE>`: 将 agent 最后一条消息写到文件，适合 cron/自动化
+- `--search`: 打开联网搜索能力，适合新闻调研类任务
 
 **推荐**: 简单任务用 `low`，复杂任务用 `high`
 

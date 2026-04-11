@@ -1,0 +1,6 @@
+.env
+periodic_jobs/ai_heartbeat/.env
+periodic_jobs/ai_heartbeat/src/.env
+.codex_tmp/
+__pycache__/
+*.pyc

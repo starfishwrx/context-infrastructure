@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import time
 import argparse
 from datetime import datetime, timedelta
 import sys
@@ -8,23 +7,31 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 try:
-    from opencode_client import OpenCodeClient
+    from agent_runner import get_workspace_root, normalize_backend, run_agent_task
 except ImportError:
-    print("Error: Could not import OpenCodeClient. Ensure path is correct.")
+    print("Error: Could not import agent runner. Ensure path is correct.")
     sys.exit(1)
 
-def run_ai_news_survey(mode="weekly", model_id="anthropic/claude-opus-4-6", publish_to_kit=False):
+WORKSPACE_ROOT = get_workspace_root()
+
+
+def run_ai_news_survey(
+    mode="weekly",
+    model_id=None,
+    publish_to_kit=False,
+    backend="codex",
+):
     """
-    Delegates the AI News Survey and personalized report generation to the OpenCode Agent.
+    Delegates the AI News Survey and personalized report generation to a local AI agent.
     Uses axiom-based evaluation framework for evidence-tiered, builder-focused reporting.
     
     Args:
         mode: "weekly" (7 days) or "daily" (1 day)
-        model_id: OpenCode model ID to use
+        model_id: Model ID to use
         publish_to_kit: If True, publish newsletter to Kit subscribers instead of personal email
+        backend: Agent backend, either "codex" or "opencode"
     """
-    client = OpenCodeClient()
-    
+    backend = normalize_backend(backend)
     date_str = datetime.now().strftime('%Y/%m/%d')
     date_file = datetime.now().strftime('%Y%m%d')
     
@@ -46,12 +53,6 @@ def run_ai_news_survey(mode="weekly", model_id="anthropic/claude-opus-4-6", publ
         period_desc = "本周"
         days_desc = "7 天"
         max_lines = 300
-    
-    session_id = client.create_session(session_title)
-    
-    if not session_id:
-        print("Failed to create OpenCode session.")
-        return
 
     if publish_to_kit:
         delivery_instruction = f"""### Phase 6：交付
@@ -105,7 +106,7 @@ def run_ai_news_survey(mode="weekly", model_id="anthropic/claude-opus-4-6", publ
 
 ### Phase 1：广度调研 + 事实采集
 
-使用 Tavily 搜索{period_desc}（{date_str} 往前推 {days_desc}）最重大的 AI 行业进展。
+使用当前环境可用的实时联网搜索能力，搜索{period_desc}（{date_str} 往前推 {days_desc}）最重大的 AI 行业进展。
 
 搜索范围：
 - 前沿模型发布（Frontier Models）
@@ -194,38 +195,43 @@ def run_ai_news_survey(mode="weekly", model_id="anthropic/claude-opus-4-6", publ
 
 请开始执行。
 """
-    print(f"Triggering {mode} news survey in OpenCode (Session: {session_id})...")
-    print(f"Using model: {model_id}")
+    print(f"Triggering {mode} news survey with backend={backend}...")
+    print(f"Using model: {model_id or '(default)'}")
     if publish_to_kit:
         print("Publish mode: Kit subscribers")
-    
-    result = client.send_message(session_id, prompt, model_id=model_id)
 
-    if not result:
-        print("No immediate response from server. Sending continuation ping...")
-        result = client.send_message(session_id, "继续", model_id=model_id)
-    
-    if result:
-        client.wait_for_session_complete(session_id)
-        messages = client.get_session_messages(session_id) or []
-        assistants = [m for m in messages if (m.get("info") or {}).get("role") == "assistant"]
-        if assistants:
-            last_info = assistants[-1].get("info") or {}
-            print(f"Resolved model: {last_info.get('providerID')}/{last_info.get('modelID')}")
-        print(f"{report_title} complete.")
-    else:
-        print("Failed to start survey session.")
+    result = run_agent_task(
+        prompt,
+        backend=backend,
+        model_id=model_id,
+        session_title=session_title,
+        workdir=WORKSPACE_ROOT,
+        search=True,
+        sandbox="workspace-write",
+    )
+    if result.resolved_model:
+        print(f"Resolved model: {result.resolved_model}")
+    if result.final_message:
+        print(result.final_message)
+    print(f"{report_title} complete.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run AI news survey (daily or weekly)")
     parser.add_argument("--mode", "-m", choices=["daily", "weekly"], default="weekly",
                         help="Survey mode: 'daily' (1 day) or 'weekly' (7 days, default)")
-    parser.add_argument("--model", "-M", default="anthropic/claude-opus-4-6",
-                        help="OpenCode model ID (default: anthropic/claude-opus-4-6)")
+    parser.add_argument("--backend", "-b", choices=["codex", "opencode"], default=os.getenv("AI_HEARTBEAT_BACKEND", "codex"),
+                        help="Agent backend (default: codex)")
+    parser.add_argument("--model", "-M", default=None,
+                        help="Model ID to use")
     parser.add_argument("--publish-to-kit", "-k", action="store_true",
                         help="Publish newsletter to Kit subscribers instead of personal email")
     args = parser.parse_args()
     
     print(f"Starting AI News Survey ({args.mode})...")
-    run_ai_news_survey(mode=args.mode, model_id=args.model, publish_to_kit=args.publish_to_kit)
+    run_ai_news_survey(
+        mode=args.mode,
+        model_id=args.model,
+        publish_to_kit=args.publish_to_kit,
+        backend=args.backend,
+    )
     print("Survey process finished.")

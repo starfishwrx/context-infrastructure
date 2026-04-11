@@ -12,7 +12,7 @@
 ### Tier 1: 核心（clone 后即可开始）
 - ✅ Rules 框架（SOUL/USER/COMMUNICATION/WORKSPACE）— 填写即用
 - ✅ Skills 框架（本目录）— 填写即用
-- ✅ 三层记忆系统 — 需配置 OpenCode + cron
+- ✅ 三层记忆系统 — 需配置 Codex CLI 或 OpenCode + cron
 
 ### Tier 2: 扩展（需要额外配置）
 - ⚙️ Semantic Search — 需要 LLM Studio 或 OpenAI API
@@ -50,6 +50,7 @@
   - **禁止轮询**：agent 运行期间不要反复调用 `background_output`，系统会自动通知
   - 判断标准：任务可拆分为 ≥2 个子任务，每个 ≥5 tool calls
   - 核心参数：并行度 ≤5，调研 overlap 30-50%，代码 overlap 0-20%
+- [Context Infrastructure Health Check](./workflow_context_infra_health_check.md) ✅ — 体检 rules、contexts、skills、.env 与 heartbeat 主链路
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 多 Agent 并行 + 交叉验证
 - [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从非结构化对话数据提取可预测的认知公理
   - 适用：群聊/Slack/Discord/邮件/播客转录等任意对话数据

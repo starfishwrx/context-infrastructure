@@ -19,33 +19,34 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 try:
-    from opencode_client import OpenCodeClient
+    from agent_runner import get_workspace_root, normalize_backend, run_agent_task
 except ImportError:
-    print("Error: Could not import OpenCodeClient. Ensure path is correct.")
+    print("Error: Could not import agent runner. Ensure path is correct.")
     sys.exit(1)
 
 
-DEFAULT_MODEL = "anthropic/claude-opus-4-6"
+WORKSPACE_ROOT = get_workspace_root()
 
 
-def run_daily_newsletter(date_str: str, dry_run: bool = False, model_id: str = DEFAULT_MODEL):
+def run_daily_newsletter(
+    date_str: str,
+    dry_run: bool = False,
+    model_id: str | None = None,
+    backend: str = "codex",
+):
     """
-    Triggers a newsletter generation session in OpenCode.
+    Triggers a newsletter generation session in a local AI agent.
 
     Args:
         date_str: Date in YYYYMMDD format (e.g. "20260301")
         dry_run: If True, generate newsletter file but skip Kit publish
-        model_id: OpenCode model ID to use
+        model_id: Model ID to use
+        backend: Agent backend, either "codex" or "opencode"
     """
-    client = OpenCodeClient()
+    backend = normalize_backend(backend)
 
     date_display = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
     session_title = f"Daily Newsletter {date_display}"
-    session_id = client.create_session(session_title)
-
-    if not session_id:
-        print("Failed to create OpenCode session.")
-        return
 
     chat_csv = f"periodic_jobs/ai_heartbeat/daily_messages/{date_str}.csv"
     output_path = f"contexts/survey_sessions/daily_ai_newsletter/ai_frontline_{date_str}.md"
@@ -125,19 +126,17 @@ source periodic_jobs/ai_heartbeat/.venv/bin/activate && \\
 
 **在执行本步之前，先读 `rules/skills/workflow_parallel_subagents.md`**。
 
-根据 Phase 1 的话题卡片，同时启动多个 background librarian agent：
+根据 Phase 1 的话题卡片，优先并行调研。如果当前环境支持 delegation/subagent 能力，就启动多个研究代理；如果不支持，就由你自己串行完成全部调研，但仍要保持同样的调研深度。
 
-1. **每个话题一个 agent**：将话题卡片中的「待调研问题」作为该 agent 的调研方向。每个 agent 的 prompt 要求：
+1. **每个话题一个研究单元**：将话题卡片中的「待调研问题」作为该单元的调研方向。每个研究单元的要求：
    - 针对话题的 3-5 个具体子问题做深入搜索
    - 返回中文摘要，500-800 字
    - 所有关键数据点必须附带来源 URL
    - 聚焦事实和数字，不要泛泛而谈
 
-2. **一个广谱新闻 agent**：不限于群聊话题，扫描当日（{date_display}）AI 领域的重大新闻，涵盖前沿模型、融资、安全事件、监管政策等。这个 agent 的发现可能成为「也值得知道」的素材，也可能与群聊话题形成意外的同构映射。
+2. **一个广谱新闻研究单元**：不限于群聊话题，扫描当日（{date_display}）AI 领域的重大新闻，涵盖前沿模型、融资、安全事件、监管政策等。这个研究单元的发现可能成为「也值得知道」的素材，也可能与群聊话题形成意外的同构映射。
 
-**启动所有 agent 后，等待系统通知，不要轮询。**
-
-**结果收集（关键）**：收到系统通知后，对每个 agent 调用 `background_output(task_id="...", full_session=true)` 获取完整结果。如果返回 `has_more: true`，用 `message_limit` 参数增大范围直到拿到全部内容。**确认所有 agent 的完整输出都已收集后，才进入 Phase 3。** 不完整的调研数据会直接导致 newsletter 缺乏深度。
+**结果收集（关键）**：确认所有研究单元的完整输出都已收集后，才进入 Phase 3。不要基于半截调研结果就开始写作。不完整的调研数据会直接导致 newsletter 缺乏深度。
 
 ---
 
@@ -172,7 +171,7 @@ source periodic_jobs/ai_heartbeat/.venv/bin/activate && \\
 
 ## Phase 4：二次针对性调研
 
-根据 Phase 3 的二次调研清单，启动 1-2 个 background librarian agent 做精准补充。
+根据 Phase 3 的二次调研清单，启动 1-2 个研究单元做精准补充。若当前环境不支持 delegation，就由你自己完成这轮补充调研。
 
 这一轮的查询是公理视角催生的，不是简单重复第一轮，所以应该能挖到第一轮挖不到的深度。每个 agent 的 prompt 同样要求附带来源 URL 和具体数据。
 
@@ -307,29 +306,27 @@ source periodic_jobs/ai_heartbeat/.venv/bin/activate && \\
 {publish_step}
 """
 
-    print(f"Triggering daily newsletter for {date_display} (Session: {session_id})...")
-    print(f"Model: {model_id}")
+    print(f"Triggering daily newsletter for {date_display} with backend={backend}...")
+    print(f"Model: {model_id or '(default)'}")
     print(f"Chat CSV: {chat_csv}")
     print(f"Output: {output_path}")
     if dry_run:
         print("Mode: dry-run (no Kit publish)")
 
-    result = client.send_message(session_id, prompt, model_id=model_id)
-
-    if not result:
-        print("No immediate response from server. Sending continuation ping...")
-        result = client.send_message(session_id, "继续", model_id=model_id)
-
-    if result:
-        client.wait_for_session_complete(session_id)
-        messages = client.get_session_messages(session_id) or []
-        assistants = [m for m in messages if (m.get("info") or {}).get("role") == "assistant"]
-        if assistants:
-            info = assistants[-1].get("info") or {}
-            print(f"Resolved model: {info.get('providerID')}/{info.get('modelID')}")
-        print(f"Newsletter for {date_display} complete.")
-    else:
-        print("Failed to start newsletter session.")
+    result = run_agent_task(
+        prompt,
+        backend=backend,
+        model_id=model_id,
+        session_title=session_title,
+        workdir=WORKSPACE_ROOT,
+        search=True,
+        sandbox="workspace-write",
+    )
+    if result.resolved_model:
+        print(f"Resolved model: {result.resolved_model}")
+    if result.final_message:
+        print(result.final_message)
+    print(f"Newsletter for {date_display} complete.")
 
 
 if __name__ == "__main__":
@@ -341,8 +338,14 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--model", "-M",
-        default=DEFAULT_MODEL,
-        help=f"OpenCode model ID (default: {DEFAULT_MODEL})",
+        default=None,
+        help="Model ID to use",
+    )
+    parser.add_argument(
+        "--backend", "-b",
+        choices=["codex", "opencode"],
+        default=os.getenv("AI_HEARTBEAT_BACKEND", "codex"),
+        help="Agent backend (default: codex)",
     )
     parser.add_argument(
         "--dry-run", "-n",
@@ -352,5 +355,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     print(f"Starting daily newsletter generation for {args.date}...")
-    run_daily_newsletter(date_str=args.date, dry_run=args.dry_run, model_id=args.model)
+    run_daily_newsletter(
+        date_str=args.date,
+        dry_run=args.dry_run,
+        model_id=args.model,
+        backend=args.backend,
+    )
     print("Done.")
