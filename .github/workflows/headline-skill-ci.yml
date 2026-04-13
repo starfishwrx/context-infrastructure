@@ -1,0 +1,37 @@
+name: headline-skill-ci
+
+on:
+  push:
+    paths:
+      - "adhoc_jobs/headline_skill/**"
+      - ".github/workflows/headline-skill-ci.yml"
+  pull_request:
+    paths:
+      - "adhoc_jobs/headline_skill/**"
+      - ".github/workflows/headline-skill-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r adhoc_jobs/headline_skill/requirements.txt
+
+      - name: Validate skill package
+        run: |
+          python adhoc_jobs/headline_skill/scripts/validate_skill.py adhoc_jobs/headline_skill
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s adhoc_jobs/headline_skill/tests -p "test_*.py"
