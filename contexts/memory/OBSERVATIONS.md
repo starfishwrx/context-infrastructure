@@ -36,23 +36,35 @@ rg -n "^Date:" contexts/memory/OBSERVATIONS.md
 
 ---
 
-Date: 2026-03-29
+Date: 2026-05-04
 
-Medium: [Active project] `adhoc_jobs/plcagent/` has reached a runnable Playwright automation skeleton centered on the forum reply flow, including login detection, iframe editor filling, optional `--submit`, local `.env` loading, and screenshot capture. Keep this as short-term project memory only; promote it into a reusable workflow or skill only after the real submission path and site adaptation strategy prove stable.
+🟡 Medium: [ai-content-center] `adhoc_jobs/ai_content_center/` is still worth retaining as short-term memory because it stabilizes a 4399-first ContentOps shape: external platforms serve as inspiration inputs, while the internal pipeline owns briefs, drafts, deterministic review gates, publish plans, takedown/account workflows, and post-publish feedback loops.
 
-Date: 2026-04-06
+Date: 2026-06-06
 
-Low: [Quiet Window] No new high-value effective changes were found across `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, and root-level key files after the previous observer run; noise paths such as `contexts/daily_records/`, caches, `artifacts/`, backup directories, `.env`, and `adhoc_jobs/ai_job_radar2/.codex_tmp_ai_job_radar2/` were filtered out.
+🟡 Medium: [survey-playbook] `contexts/survey_sessions/g_bits_game_ai_pm_interview_survey_20260603.md` turns a company-specific interview memo into a reusable AI-ops research pattern by decomposing an AI product role into concrete workflow surfaces, low-risk pilot scenarios, governance boundaries, success metrics, and a 30/60/90-day rollout path for game publishing or other operations-heavy teams.
 
-Date: 2026-04-07
+Date: 2026-06-18
 
-🟢 Low: [Quiet Window] 按 `periodic_jobs/ai_heartbeat/prompts/codex_observer.md` 扫描 `adhoc_jobs/`、`periodic_jobs/`、`rules/skills/` 与根目录关键文件后，未发现最近约 24 小时内的新有效变更；已过滤 `contexts/daily_records/`、`__pycache__/`、`.pytest_cache/`、`artifacts/`、备份目录、`.env` 与 `.codex_tmp_*` 等噪音路径。
+🟡 Medium: [g-bits-overseas] `contexts/survey_sessions/g_bits_injoy_overseas_publishing_pan_qinan_survey_20260617.md` captures durable near-term context for the 吉比特海外发行 AI PM interview: the role is better modeled as an internal AI workflow PM for overseas publishing, with evidence tied to official “发行-境外市场”岗位、海外收入增长、素材生产、版本管理、社群反馈和区域市场协作链路.
 
-Date: 2026-04-09
+Date: 2026-06-20
 
-🟡 Medium: [CMS Architecture] `adhoc_jobs/tmp_githubuiuxnotion/backend/alembic/versions/b9d4c8a1f6e2_add_cms_tables.py`、`adhoc_jobs/tmp_githubuiuxnotion/backend/app/models.py` 与 `adhoc_jobs/tmp_githubuiuxnotion/backend/app/routers/portfolio.py` 表明该临时项目已从单页作品集推进为数据库驱动的 CMS：新增 `site_settings`、`nav_icons`、`content_categories`、`content_items`、`timeline_items`、`tag_items`、`articles`、`media_assets` 与 `admin_users`，并提供带认证的后台 CRUD、媒体上传和从旧 `site_profiles`/`site_links` 向新结构自举的迁移路径。
-🟡 Medium: [Fixed IA] `adhoc_jobs/tmp_githubuiuxnotion/backend/app/routers/portfolio.py` 将首页信息架构固定为 `sites/projects/plugins/articles` 四个 section key，只允许后台编辑分区元数据与内容项本身；`adhoc_jobs/tmp_githubuiuxnotion/web/src/pages/admin-cms-page.tsx` 同步落地了 settings/theme/icons/content/timeline/tags/articles/media 多标签后台，这种“固定骨架 + 可编辑内容”的建站模式比完全自由拼装更容易保持前台布局稳定。
+🟡 Medium: [admissions-comparison] `contexts/survey_sessions/fujian_2025_admission_subjects_survey_20260620.md` and `tmp/fujian_2025_admission_subjects/` establish a reusable comparison pattern for choice-heavy planning questions: convert official PDF plans into structured CSVs, use `院校专业组计划数` as the primary decision metric with professional-entry counts as a secondary view, and separate plan-side coverage conclusions from unverified competition-side claims when candidate distribution data is unavailable.
 
-Date: 2026-04-11
+Date: 2026-06-21
 
-🟢 Low: [Quiet Window] 按 `periodic_jobs/ai_heartbeat/prompts/codex_observer.md` 扫描 `adhoc_jobs/`、`periodic_jobs/`、`rules/skills/` 与根目录关键文件后，未发现自 2026-04-09 21:41 CST 以来的新源码或文档级有效变更；已过滤 `tmp_githubuiuxnotion` 中仅体现运行痕迹的日志、构建产物、`node_modules/`、`.venv/` 与其他缓存类噪音路径。
+🟡 Medium: [publishing-cockpit-demo] `adhoc_jobs/gbits_overseas_ai_cockpit/` now packages a workflow-first overseas publishing AI cockpit as a lightweight Vite/React demo: it converts multi-region player feedback into clustered issues, risk-tagged action queues, human approval gates, and KPI回流, which is a reusable way to present AI as an operations console for发行/运营 teams rather than as a generic chatbot.
+
+Date: 2026-06-27
+
+🟡 Medium: [resume-positioning] `docs/resume_product_ops_engineer_ai_latest_20260626.md` turns the recent AI+业务岗位反思 into an execution-facing resume pattern: lead with concrete运营 workflow automation, context/knowledge infrastructure, alerting and capacity-response cases, and explicit人效/成本 outcomes so AI is framed as业务提效能力 rather than as generic tool familiarity or platform-style concept work for ops-heavy roles.
+
+Date: 2026-07-02
+
+🔴 High: [ai-business-gate] `rules/USER.md` now codifies a durable collaboration rule for AI+业务复合岗位: first judge whether the buyer values business execution or AI tooling, default all case/demo表达 to a business-first workflow narrative, and gate demo polishing behind a 90% business-cognition bar.
+🟡 Medium: [candidate-packaging] `rules/USER.md` now records a sharper求职画像和核心资产清单 around 4399 平台运营、论坛活动贴生成、云游戏日报自动化、并发/排队预测、作品集与本地工具, which is near-term context for packaging the user as a产品型候选人 who embeds AI into运营、数据、知识库和协作流程 rather than as an “AI heavy user.”
+
+Date: 2026-07-04
+
+🟢 Low: [quiet-window] Scanned `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, root files, and a wider non-noise workspace window after the `2026-07-02` observer checkpoint; found no new eligible source-backed writes beyond the prior observer append in `contexts/memory/OBSERVATIONS.md`, so this interval is recorded as a verified quiet window.

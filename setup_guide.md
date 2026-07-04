@@ -64,7 +64,13 @@
 
 将新 skill 添加到 `rules/skills/INDEX.md` 对应分类。
 
-### 2c. 关于 Axioms（公理）
+### 2c. 安装外部 public skill repo
+
+`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Google Maps、Outlook、Resend、OpenCode、Process Launcher、PPTX、Typefully、Circle Post 和 Stripe。
+
+安装时，把目标 repo URL 交给你的 AI agent，让它从当前 workspace 的 `AGENTS.md` / `WORKSPACE.md` 出发，只暴露一个 root skill。通用技术 contract 留在 public repo；联系人 alias、本地路径、endpoint、token 和业务上下文留在本地 overlay。
+
+### 2d. 关于 Axioms（公理）
 
 `rules/axioms/` 包含 43 条从真实经历中蒸馏的决策原则。这些代表原作者的视角和认知模式，对你有**参考价值**，但不能替代你自己的公理。
 
@@ -212,7 +218,7 @@ python3 periodic_jobs/ai_heartbeat/src/v0/observer.py 2024-01-15 --backend codex
 A：可以用来理解系统的结构，但核心内容代表原作者的视角。你的 axioms 需要从你自己的经历中提炼。参考 `rules/skills/workflow_cognitive_profile_extraction.md` 了解提炼方法。
 
 **Q：skills 能直接用吗？**  
-A：✅ 标记的可以直接用。⚙️ 标记的需要替换配置（endpoint、API key、域名等）。BestPractice 类基本都可以直接用。
+A：✅ 标记的可以直接用。⚙️ 标记的需要替换配置（endpoint、API key、域名等）。BestPractice 类基本都可以直接用。更完整的工具型能力优先从 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md) 里的独立 public repo 安装，而不是继续把所有实现塞回 starter workspace。
 
 **Q：observer.py 需要什么依赖？**  
 A：如果你用 Codex，只需要本地可执行的 `codex exec`。但对这套 workspace 来说，`observer.py` 和 `reflector.py` 的主要定位是启动验证、故障排查和补跑；日常运行应交给 Codex automation。如果你用 OpenCode，则依赖 `opencode_client.py` 和对应的 Server API。

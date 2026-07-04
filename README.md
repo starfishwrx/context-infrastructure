@@ -20,6 +20,8 @@ cd context-infrastructure
 
 详细步骤见 [`setup_guide.md`](setup_guide.md)。如果你用 Codex，后续长期运行默认走 Codex 原生 automation。
 
+如果你想把它扩展成更完整的工作系统，可以看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列了一组可单独安装的 public skill repo，例如 Web 搜索、Google Docs、Google Maps、邮件、OpenCode、PPTX、社交媒体、Circle 社区发布、支付分析和本地 process launcher。你这份 fork 继续保留 Codex/heartbeat 的本地定制；更通用的工具能力按需从独立 repo 接入。
+
 ---
 
 ## 目录结构
@@ -31,7 +33,9 @@ context-infrastructure/
 ├── .env.example                 # 环境变量模板
 │
 ├── docs/
-│   └── CRONTAB.md               # 兼容路径：不用 Codex automation 时的 cron 指南
+│   ├── CRONTAB.md               # 兼容路径：不用 Codex automation 时的 cron 指南
+│   ├── SKILL_ECOSYSTEM.md       # 可单独安装的 public skill repo 目录
+│   └── working.md               # 上游 working log 模板
 │
 ├── rules/
 │   ├── SOUL.md                  # AI 的身份和行为基调（模板）

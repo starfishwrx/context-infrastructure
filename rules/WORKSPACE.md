@@ -17,6 +17,7 @@
 ### 系统与规则
 - 可复用技术方案 / Skill：`rules/skills/`
 - 核心公理（Axioms）：`rules/axioms/`
+- 上游扩展文档 / public skill 生态：`docs/`
 - 记忆系统：`contexts/memory/` + `periodic_jobs/ai_heartbeat/`
 
 ## 命名规则
@@ -33,5 +34,6 @@
 <!-- 格式：- `project-name` → `adhoc_jobs/project_name/` (说明) -->
 - `ai-job-radar2` → `adhoc_jobs/ai_job_radar2/` (job radar project imported from Desktop)
 - `ai-heartbeat` → `periodic_jobs/ai_heartbeat/` (observer/reflector prompts, docs, runtime)
+- `ai-content-center` → `adhoc_jobs/ai_content_center/` (domestic AI content generation middle-platform prototype)
 - `chronos-2` → `adhoc_jobs/chronos_2/` (time-series forecasting project imported from E:\demo)
 - `plcagent` → `adhoc_jobs/plcagent/` (standalone Codex project)
