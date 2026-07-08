@@ -37,3 +37,4 @@
 - `ai-content-center` → `adhoc_jobs/ai_content_center/` (domestic AI content generation middle-platform prototype)
 - `chronos-2` → `adhoc_jobs/chronos_2/` (time-series forecasting project imported from E:\demo)
 - `plcagent` → `adhoc_jobs/plcagent/` (standalone Codex project)
+- `hardware-diagnostics` → `adhoc_jobs/hardware_diagnostics/` (private host diagnostics and CPU/memory tuning evidence)

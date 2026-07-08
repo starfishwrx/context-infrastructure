@@ -60,11 +60,16 @@ Date: 2026-06-27
 
 🟡 Medium: [resume-positioning] `docs/resume_product_ops_engineer_ai_latest_20260626.md` turns the recent AI+业务岗位反思 into an execution-facing resume pattern: lead with concrete运营 workflow automation, context/knowledge infrastructure, alerting and capacity-response cases, and explicit人效/成本 outcomes so AI is framed as业务提效能力 rather than as generic tool familiarity or platform-style concept work for ops-heavy roles.
 
-Date: 2026-07-02
+Date: 2026-07-05
 
-🔴 High: [ai-business-gate] `rules/USER.md` now codifies a durable collaboration rule for AI+业务复合岗位: first judge whether the buyer values business execution or AI tooling, default all case/demo表达 to a business-first workflow narrative, and gate demo polishing behind a 90% business-cognition bar.
-🟡 Medium: [candidate-packaging] `rules/USER.md` now records a sharper求职画像和核心资产清单 around 4399 平台运营、论坛活动贴生成、云游戏日报自动化、并发/排队预测、作品集与本地工具, which is near-term context for packaging the user as a产品型候选人 who embeds AI into运营、数据、知识库和协作流程 rather than as an “AI heavy user.”
+🟡 Medium: [hardware-diagnostics] `adhoc_jobs/hardware_diagnostics/` now packages a private, evidence-first diagnostics workflow for the Ryzen 9 7900X / Gigabyte B650 machine: project-local sensor tooling, hash/signature-locked dependency tracking, snapshot/sample/profile-compare actions, and explicit human gates around BIOS, chipset, and tuning changes instead of auto-tuning.
+🟡 Medium: [phone-hardware-triage] `contexts/survey_sessions/iqoo11pro_wifi_failure_survey_20260704.md` captures a reusable troubleshooting pattern for intermittent phone radio failures: treat WiFi/hotspot toggle failure as backup-first board-risk evidence, use Bluetooth联动 to separate subsystem faults from generic network issues, and limit software attempts to one official no-loss pass before escalating to written repair diagnostics and quotes.
 
-Date: 2026-07-04
+Date: 2026-07-06
 
-🟢 Low: [quiet-window] Scanned `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, root files, and a wider non-noise workspace window after the `2026-07-02` observer checkpoint; found no new eligible source-backed writes beyond the prior observer append in `contexts/memory/OBSERVATIONS.md`, so this interval is recorded as a verified quiet window.
+🟢 Low: [observer-quiet-window] `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, and root docs had no new eligible post-checkpoint writes after the last observer run at 2026-07-05 20:01:17 +08:00; a widened workspace scan only surfaced the prior observer writeback in `contexts/memory/OBSERVATIONS.md`.
+
+Date: 2026-07-08
+
+🟡 Medium: [realtime-state-context] `contexts/daily_records/2026_05_04_to_2026_07_08_feishu_daily_context.md` and `contexts/thought_review/realtime_state_snapshot_20260708.md` capture the user's recent state shift from AI content-center experiments, resume/interview pushes, and gbit demo prep toward a clearer business-first job-search loop: build one public, experienceable deep project, train higher-signal spoken interview answers, screen hard job constraints earlier, and keep low-friction voice records as realtime context rather than unstructured diary backlog.
+🟢 Low: [observer-quiet-window] `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, root `docs/`, and the widened workspace had no new eligible post-checkpoint writes after the last observer run at 2026-07-06 23:17:04 +08:00; the only post-cutoff non-noise change was the prior observer writeback in `contexts/memory/OBSERVATIONS.md`.
