@@ -64,6 +64,7 @@
   - 判断标准：任务命中信息面宽、独立读任务、独立判断、高价值不确定性、主线程需保留整合能力中的至少 2 条
   - 核心参数：并行度 ≤5，调研 overlap 30-50%，代码 overlap 0-20%
 - [Context Infrastructure Health Check](./workflow_context_infra_health_check.md) ✅ — 体检 rules、contexts、skills、.env 与 heartbeat 主链路
+- [AI 会话检索与归档](./ai_session_search_archive.md) ✅ — 在本地统一 Markdown 归档中先做关键词检索、再按需做语义检索；会话内容保持私有
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 多 Agent 并行 + 交叉验证（Phase 1-3 信息采集）
 - [外部写作工作流](./workflow_external_writing.md) ✅ — 将调研素材转化为有判断力的 external-facing 分析文章。做深度调研并写 external 文章时，两个 skill 都要读
 - [内部写作工作流](./workflow_internal_writing.md) ✅ — 面向用户本人、共享上下文协作者和未来 AI agent 的内部文档写作。核心是低决策摩擦：结论前置、skimmable、inline evidence、方便跳转和验证，必要时用图表降低认知负担。
@@ -91,6 +92,8 @@
 - [时间敏感信息验证](./bestpractice_temporal_info_verification.md) ✅ — 验证可能超出 knowledge cutoff 的信息
 - [分阶段工作法](./bestpractice_staged_approach.md) ✅ — 隔离-处理-验证闭环，破坏性操作前 Dry Run
 - [GUI 自动化方法论](./bestpractice_gui_automation.md) ✅ — 把没有 API 的界面转化为可编程接口
+- [内部文档视觉与排版](./bestpractice_internal_visuals.md) ✅ — 用表格、状态块、折叠区和证据链接降低内部文档的审阅成本
+- [外部中文文章微观文风](./bestpractice_external_prose.md) ✅ — 面向陌生读者控制句式、术语、比喻与 AI 腔，作为外部写作的可选细化检查
 - [AI 辅助调试诊断](./bestpractice_ai_debugging_diagnosis.md) ✅ — "代码改不好"的根因诊断决策树
 - [AI 产品设计原则](./bestpractice_ai_product_design.md) ✅ — 线性聊天 vs 知识工作、感知规则解耦
 - [产品/技术决策逆向工程](./bestpractice_product_decision_analysis.md) ✅ — 从设计空间、约束和 trade-off 分析产品或技术决策
