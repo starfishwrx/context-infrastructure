@@ -2,5 +2,6 @@
 periodic_jobs/ai_heartbeat/.env
 periodic_jobs/ai_heartbeat/src/.env
 .codex_tmp/
+rules/private/
 __pycache__/
 *.pyc

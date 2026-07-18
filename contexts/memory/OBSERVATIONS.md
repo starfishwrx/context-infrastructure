@@ -73,3 +73,23 @@ Date: 2026-07-08
 
 🟡 Medium: [realtime-state-context] `contexts/daily_records/2026_05_04_to_2026_07_08_feishu_daily_context.md` and `contexts/thought_review/realtime_state_snapshot_20260708.md` capture the user's recent state shift from AI content-center experiments, resume/interview pushes, and gbit demo prep toward a clearer business-first job-search loop: build one public, experienceable deep project, train higher-signal spoken interview answers, screen hard job constraints earlier, and keep low-friction voice records as realtime context rather than unstructured diary backlog.
 🟢 Low: [observer-quiet-window] `adhoc_jobs/`, `periodic_jobs/`, `rules/skills/`, root `docs/`, and the widened workspace had no new eligible post-checkpoint writes after the last observer run at 2026-07-06 23:17:04 +08:00; the only post-cutoff non-noise change was the prior observer writeback in `contexts/memory/OBSERVATIONS.md`.
+
+Date: 2026-07-11
+
+🔴 High: [cognitive-profile-workflow] `rules/skills/workflow_cognitive_profile_extraction.md` adds a reusable认知画像提取 workflow that treats axiom building as a multi-round, subagent-driven research system with explicit Opus routing, pressure tests, prediction-backtesting, boundary-condition handling, and a hard split between delegated evidence gathering and non-delegated final writing.
+🟡 Medium: [codex-proxy-repair] `adhoc_jobs/codex_network_repair_20260711/README.md` and `contexts/thought_review/codex_windows_update_issue_log_2026_07_11.md` turn the Codex/Windows update fix into a reusable local troubleshooting pattern: let FL Clash exclusively own the WinINET proxy switch, enable Codex `respect_system_proxy`, remove persistent user proxy env vars, and reset WinHTTP to direct so apps do not keep failing against a dead `127.0.0.1:7890` proxy after the proxy client closes.
+
+Date: 2026-07-12
+
+🔴 High: [hardware-tuning-gates] `adhoc_jobs/hardware_diagnostics/docs/tuning_plan_review_20260712.md` upgrades the local hardware-tuning method into a stricter staged workflow: gate Windows-side CPU tuning on VBS/Ryzen Master compatibility first, treat Win11 migration as a larger performance lever than BIOS-first tweaking, re-validate DDR5-6000 baseline stability before any A/B tuning, and enforce explicit voltage/temperature abort ceilings plus BIOS re-entry verification after session-side success.
+🟡 Medium: [e-drive-organization] `adhoc_jobs/e_drive_organization/organize_e_drive.py` and the added `rules/WORKSPACE.md` route establish a conservative disk-organization utility pattern: default to dry-run, move only whitelisted folder groups or extension-classified loose files, flatten only named drawer folders one level deep, keep installers as report-only candidates, and hard-exclude system directories, live app data, and the workspace itself from bulk moves.
+
+Date: 2026-07-13
+
+🔴 High: [mutation-safe-controller] `adhoc_jobs/hardware_tuning/` turns risky host tuning into a reusable mutation-safe controller pattern: keep `hardware_tuning -> hardware_diagnostics` as a one-way read-only dependency, persist only sanitized atomic campaign state, default stage actions to dry-run or blocked, and require per-change operator cards plus explicit human execution for BIOS or other destructive steps.
+🟡 Medium: [bios-validation-mode] `adhoc_jobs/hardware_tuning/docs/rm_vbs_compatibility_20260713.md`, `adhoc_jobs/hardware_tuning/README.md`, and `adhoc_jobs/hardware_tuning/docs/decisions.md` lock the current Ryzen campaign into `bios_operator_cards_with_windows_validation`: preserve Windows 10 + WSL2/VBS, treat Ryzen Master 3.1 startup success as insufficient without stable control/readback semantics, and keep Windows tools in a read-only telemetry/WHEA-verdict role while parameters remain manual.
+
+Date: 2026-07-15
+
+🔴 High: [private-user-context-boundary] `.gitignore`, `rules/USER.md`, and `rules/WORKSPACE.md` now split collaboration context into a business-first default user profile plus Git-ignored `rules/private/` overlays for identity, finance, relationship, and health details, establishing an on-demand privacy boundary instead of keeping sensitive personal state in the always-loaded rule layer.
+🟡 Medium: [post-flash-rm-manual-gate] `adhoc_jobs/hardware_diagnostics/docs/tuning_campaign_plan_20260712.md`, `adhoc_jobs/hardware_tuning/docs/working.md`, `adhoc_jobs/hardware_tuning/docs/operator_cards/OC-8_ryzen_master_manual_apply.md`, and `adhoc_jobs/hardware_tuning/src/HardwareTuning.psm1` shift the 7900X tuning campaign into a post-F42b delta-validation flow: verify clean JEDEC defaults after Q-Flash first, then gate CPU/RAM changes behind Ryzen Master manual diff cards, screenshot-based readback, and external telemetry while BIOS persistence switches stay off during experiments.
